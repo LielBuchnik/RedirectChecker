@@ -32,12 +32,13 @@ function handleFileUpload() {
                 runEnhancedRedirectAnalysis(data, outputElement);
             } else if (analysisType === "trailingSlash") {
                 runTrailingSlashRedirectCheck(data, outputElement);
+            } else if (analysisType === "comprehensive") {
+                runComprehensiveAnalysis(data, outputElement);
             }
             scrollToBottom(outputElement);
         }
     });
 }
-
 
 // Helper function to normalize URLs by removing trailing slashes
 function normalizeUrl(url) {
@@ -126,15 +127,51 @@ function runTrailingSlashRedirectCheck(data, outputElement) {
     displayResults(trailingSlashIssues, outputElement);
 }
 
+function runComprehensiveAnalysis(data, outputElement) {
+    const simpleResults = [];
+    const enhancedResults = [];
+    const trailingSlashResults = [];
+
+    outputElement.innerHTML += "<span>Running Comprehensive Analysis...</span><br>";
+
+    data.forEach((row, rowNumber) => {
+        const origin = row[OriginColumn.value].trim();
+        const target = row[TargetColumn.value].trim();
+
+        // Run simple duplicate check
+        const normalizedOrigin = normalizeUrl(origin);
+        const normalizedTarget = normalizeUrl(target);
+        if (redirectMap.get(normalizedTarget) === normalizedOrigin) {
+            simpleResults.push({ row: rowNumber + 1, origin, target, issueType: 'Simple Duplicate' });
+        }
+
+        // Run enhanced redirect check for root
+        if (target === "/" || target === "//") {
+            enhancedResults.push({ row: rowNumber + 1, origin, target, issueType: 'Enhanced Redirect to Root' });
+        }
+
+        // Run trailing slash check
+        if (normalizedOrigin === normalizedTarget && origin !== target) {
+            trailingSlashResults.push({ row: rowNumber + 1, origin, target, issueType: 'Trailing Slash' });
+        }
+
+        // Update redirect map for duplicates
+        redirectMap.set(normalizedOrigin, normalizedTarget);
+    });
+
+    const allResults = [...simpleResults, ...enhancedResults, ...trailingSlashResults];
+    displayResults(allResults, outputElement);
+}
+
 // Display results of the analysis and add option to download CSV if issues are found
 function displayResults(results, outputElement) {
-    let counter = 0
+    let counter = 0;
     if (results.length > 0) {
         results.forEach(issue => {
             const issueElement = document.createElement("span");
             issueElement.classList.add("issue");
             issueElement.style.color = "#00e400";
-            issueElement.innerText = `Info - Row ${issue.row}: Redirect analyzed successfully - Origin: ${issue.origin} -> Target: ${issue.target}\n`;
+            issueElement.innerText = `Info - Row ${issue.row}: ${issue.issueType} - Origin: ${issue.origin} -> Target: ${issue.target}\n`;
             outputElement.appendChild(issueElement);
             counter++;
         });
@@ -143,6 +180,20 @@ function displayResults(results, outputElement) {
         outputElement.innerHTML += "<span>No issues found.</span><br>";
     }
     outputElement.innerHTML += `<span>Analysis complete, found total of ${counter} issues.</span>`;
+}
+
+// Update CSV download to include issue type
+function downloadCSV(data) {
+    const csvContent = "data:text/csv;charset=utf-8," +
+        ["Row,Origin,Target,Issue Type", ...data.map(issue => `${issue.row},${issue.origin},${issue.target},${issue.issueType}`)].join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "redirect_issues.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 // Function to scroll to the bottom of the output container
@@ -166,20 +217,6 @@ function createDownloadButton(results) {
 
     // Update the click event with the latest results
     downloadButton.onclick = () => downloadCSV(results);
-}
-
-// Function to generate CSV content and initiate download
-function downloadCSV(data) {
-    const csvContent = "data:text/csv;charset=utf-8," +
-        ["Row,Origin,Target", ...data.map(issue => `${issue.row},${issue.origin},${issue.target}`)].join("\n");
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "redirect_issues.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
 }
 
 // Clear Logs
