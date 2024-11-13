@@ -1,3 +1,6 @@
+// Global redirectMap variable to store redirects for all analysis types
+let redirectMap;
+
 document.getElementById('csvFileInput').addEventListener('change', enableStartButton);
 document.getElementById('startButton').addEventListener('click', handleFileUpload);
 document.getElementById('clearButton').addEventListener('click', clearLog);
@@ -26,6 +29,9 @@ function handleFileUpload() {
         header: true,
         complete: function (results) {
             const data = results.data;
+            // Initialize redirectMap for each analysis type
+            redirectMap = new Map();
+
             if (analysisType === "simple") {
                 runSimpleDuplicateChecker(data, outputElement);
             } else if (analysisType === "enhanced") {
@@ -48,12 +54,8 @@ function normalizeUrl(url) {
 // Simple duplicate checker for immediate circular redirects
 function runSimpleDuplicateChecker(data, outputElement) {
     let rowNumber = 1;
-    const redirectMap = new Map();
     const circularRedirects = [];
-
     outputElement.innerHTML += "<span>Running Simple Duplicate Checker...</span><br>";
-    console.log(OriginColumn.value);
-    console.log(TargetColumn.value);
 
     data.forEach(row => {
         const origin = normalizeUrl(row[OriginColumn.value].trim());
@@ -77,14 +79,12 @@ function runSimpleDuplicateChecker(data, outputElement) {
 // Enhanced analysis for redirects to root paths that may cause too many redirects
 function runEnhancedRedirectAnalysis(data, outputElement) {
     let rowNumber = 1;
-    const redirectMap = new Map();
     const rootRedirects = [];
-
     outputElement.innerHTML += "<span>Running Enhanced Redirect Analysis...</span><br>";
 
     data.forEach(row => {
-        const origin = normalizeUrl(row['Origin'].trim());
-        const target = normalizeUrl(row['Target'].trim());
+        const origin = normalizeUrl(row[OriginColumn.value].trim());
+        const target = normalizeUrl(row[TargetColumn.value].trim());
 
         if (rowNumber % 100 === 0) {
             outputElement.innerHTML += `Checking row ${rowNumber}<br>`;
@@ -105,7 +105,6 @@ function runEnhancedRedirectAnalysis(data, outputElement) {
 function runTrailingSlashRedirectCheck(data, outputElement) {
     let rowNumber = 1;
     const trailingSlashIssues = [];
-
     outputElement.innerHTML += "<span>Running Trailing Slash Redirect Check...</span><br>";
 
     data.forEach(row => {
@@ -116,7 +115,6 @@ function runTrailingSlashRedirectCheck(data, outputElement) {
             outputElement.innerHTML += `Checking row ${rowNumber}<br>`;
         }
 
-        // Check if the URLs are identical except for a trailing slash
         if (normalizeUrl(origin) === normalizeUrl(target) && origin !== target) {
             trailingSlashIssues.push({ row: rowNumber, origin, target });
         }
@@ -127,6 +125,7 @@ function runTrailingSlashRedirectCheck(data, outputElement) {
     displayResults(trailingSlashIssues, outputElement);
 }
 
+// Comprehensive Analysis for all types of issues
 function runComprehensiveAnalysis(data, outputElement) {
     const simpleResults = [];
     const enhancedResults = [];
@@ -162,6 +161,7 @@ function runComprehensiveAnalysis(data, outputElement) {
     const allResults = [...simpleResults, ...enhancedResults, ...trailingSlashResults];
     displayResults(allResults, outputElement);
 }
+
 
 // Display results of the analysis and add option to download CSV if issues are found
 function displayResults(results, outputElement) {
