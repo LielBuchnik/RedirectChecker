@@ -28,13 +28,16 @@ function handleFileUpload() {
             const data = results.data;
             if (analysisType === "simple") {
                 runSimpleDuplicateChecker(data, outputElement);
-            } else {
+            } else if (analysisType === "enhanced") {
                 runEnhancedRedirectAnalysis(data, outputElement);
+            } else if (analysisType === "trailingSlash") {
+                runTrailingSlashRedirectCheck(data, outputElement);
             }
             scrollToBottom(outputElement);
         }
     });
 }
+
 
 // Helper function to normalize URLs by removing trailing slashes
 function normalizeUrl(url) {
@@ -95,6 +98,32 @@ function runEnhancedRedirectAnalysis(data, outputElement) {
     });
 
     displayResults(rootRedirects, outputElement);
+}
+
+// Trailing Slash Redirect Check
+function runTrailingSlashRedirectCheck(data, outputElement) {
+    let rowNumber = 1;
+    const trailingSlashIssues = [];
+
+    outputElement.innerHTML += "<span>Running Trailing Slash Redirect Check...</span><br>";
+
+    data.forEach(row => {
+        const origin = row[OriginColumn.value].trim();
+        const target = row[TargetColumn.value].trim();
+
+        if (rowNumber % 100 === 0) {
+            outputElement.innerHTML += `Checking row ${rowNumber}<br>`;
+        }
+
+        // Check if the URLs are identical except for a trailing slash
+        if (normalizeUrl(origin) === normalizeUrl(target) && origin !== target) {
+            trailingSlashIssues.push({ row: rowNumber, origin, target });
+        }
+
+        rowNumber++;
+    });
+
+    displayResults(trailingSlashIssues, outputElement);
 }
 
 // Display results of the analysis and add option to download CSV if issues are found

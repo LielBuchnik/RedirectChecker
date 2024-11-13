@@ -26,6 +26,17 @@
             <div class="radio-group">
                 <div style="display: flex;">
                     <label>
+                        <input type="radio" name="analysisType" value="trailingSlash">
+                        Trailing Slash Redirect Check
+                    </label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <span class="tooltip-text">This option checks for redirects that differ only by a trailing slash, identifying minor inconsistencies<br>(f.e randomtext.com to randomtext.com/).</span>
+                    </div>
+                </div>
+                
+                <div style="display: flex;">
+                    <label>
                         <input type="radio" name="analysisType" value="simple" checked>
                         Simple Duplicate Checker
                     </label>
