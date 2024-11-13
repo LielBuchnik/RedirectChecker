@@ -249,3 +249,52 @@ input[type="radio"] {
 .tooltip-icon:hover {
     color: #ffffff;
 }
+/* Mobile layout adjustments */
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .input-container, .mainLogDiv {
+        width: 80%;
+        max-width: 90%;
+        margin: 0;
+    }
+
+    .clearButton{
+        width: 25%;
+        margin-bottom: 15px;
+    }
+
+    #downloadCSVButton{
+        width: 55%;
+        margin: 15px;
+        margin-bottom: 35px;
+    }
+
+    .input-container {
+        order: 1;
+    }
+
+    .mainLogDiv {
+        order: 2;
+        margin-top: 15px;
+    }
+
+    #output {
+        width: 93%;
+        height: 250px;
+        margin: 0;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .tooltip-container .tooltip-text {
+        width: 200px;
+        font-size: 12px;
+        padding: 8px;
+    }
+}
