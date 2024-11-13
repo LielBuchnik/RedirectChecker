@@ -1,33 +1,130 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin: 20px;
+    margin: 0;
+    background: linear-gradient(215deg, #7e007e, #160016, #100010);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 h1 {
-    color: #333;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    margin-bottom: 10px;
+}
+
+p {
+    color: #cccccc;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 1500px;
+    width: 100%;
+    padding: 20px;
 }
 
 .input-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(144, 0, 255, 0.239);
+    width: 100%;
+    max-width: 500px;
 }
 
-#csvFileInput,
-#startButton {
-    width: fit-content;
-    padding: 10px;
+/* .issue { color: rgb(16, 255, 79); } */
+
+
+label {
     font-size: 16px;
+    color: #cccccc;
+}
+
+input[type="text"],
+input[type="file"],
+input[type="radio"] + label {
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #777;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="file"]:focus {
+    border-color: #6c63ff;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 10px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #bbbbbb;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.radio-group label:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+input[type="radio"] {
+    accent-color: #6c63ff;
+    transform: scale(1.2);
+}
+
+#startButton,
+#downloadCSVButton,
+.clearButton {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 400px;
 }
 
 #startButton {
-    background-color: #4CAF50;
+    background-color: #6c63ff;
     color: white;
-    border: none;
-    cursor: pointer;
+}
+
+#startButton:hover {
+    background-color: #5a52cc;
 }
 
 #startButton:disabled {
@@ -35,41 +132,13 @@ h1 {
     cursor: not-allowed;
 }
 
-#output {
-    margin: 20px auto;
-    padding: 10px;
-    max-width: 1200px;
-    height: 400px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #353535;
-    font-family: monospace;
-    text-align: left;
-    white-space: pre-wrap;
-    color: #bdbdbd;
-}
-
-.description {
-    font-size: 14px;
-    color: #666;
-    max-width: 600px;
-    margin: 5px auto;
-    text-align: left;
-}
-
-.issue {
-    color: red;
-    font-weight: bold;
-}
-
 #downloadCSVButton {
     background-color: #30beff;
     color: white;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    font-weight: 600;
+}
+
+#downloadCSVButton:hover {
+    background-color: #259fcc;
 }
 
 #downloadCSVButton:disabled {
@@ -77,27 +146,106 @@ h1 {
     cursor: not-allowed;
 }
 
-#downloadCSVButton {
-    background-color: #30beff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    font-weight: 600;
-}
-
 .clearButton {
-    background-color: rgba(255, 106, 106, 0.826);
-    border: none;
-    outline: none;
-    font-size: 11px;
-    width: 5%;
-    height: 6%;
-    color: rgba(255, 255, 255, 0.922);
+    background-color: #ff6a6a;
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 600;
+    font-size: 14px;
+    padding: 8px;
 }
 
-.mainLogDiv{
+.clearButton:hover {
+    background-color: #cc5555;
+}
+
+.mainLogDiv {
+    width: 100%;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+#output {
     margin: 20px auto;
-    width: 1200px;
+    padding: 15px;
+    width: 800px;
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #555;
+    border-radius: 10px;
+    background-color: #353535;
+    font-family: monospace;
+    text-align: left;
+    white-space: pre-wrap;
+    color: #bdbdbd;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.description {
+    font-size: 14px;
+    color: #bbbbbb;
+    max-width: 600px;
+    text-align: left;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+}
+
+/* Tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.tooltip-container .tooltip-text {
+    visibility: hidden;
+    width: 250px;
+    background-color: rgba(40, 40, 60, 0.9);
+    color: #ffffff;
+    text-align: left;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+}
+
+/* Tooltip arrow */
+.tooltip-container .tooltip-text::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(40, 40, 60, 0.9) transparent transparent transparent;
+}
+
+/* Show the tooltip text on hover */
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+/* Icon styling */
+.tooltip-icon {
+    font-size: 16px;
+    color: #bbbbbb;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.tooltip-icon:hover {
+    color: #ffffff;
 }

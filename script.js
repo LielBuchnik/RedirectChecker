@@ -99,18 +99,21 @@ function runEnhancedRedirectAnalysis(data, outputElement) {
 
 // Display results of the analysis and add option to download CSV if issues are found
 function displayResults(results, outputElement) {
+    let counter = 0
     if (results.length > 0) {
         results.forEach(issue => {
             const issueElement = document.createElement("span");
             issueElement.classList.add("issue");
-            issueElement.innerText = `Row ${issue.row}: Circular redirect found - Origin: ${issue.origin} -> Target: ${issue.target}\n`;
+            issueElement.style.color = "#00e400";
+            issueElement.innerText = `Info - Row ${issue.row}: Redirect analyzed successfully - Origin: ${issue.origin} -> Target: ${issue.target}\n`;
             outputElement.appendChild(issueElement);
+            counter++;
         });
         createDownloadButton(results);
     } else {
         outputElement.innerHTML += "<span>No issues found.</span><br>";
     }
-    outputElement.innerHTML += "<span>Analysis complete.</span>";
+    outputElement.innerHTML += `<span>Analysis complete, found total of ${counter} issues.</span>`;
 }
 
 // Function to scroll to the bottom of the output container
