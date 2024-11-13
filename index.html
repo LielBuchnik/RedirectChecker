@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirect Checker</title>
+    <!-- Load PapaParse from a CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Redirect Checker</h1>
+    <p>Upload your CSV file to check for circular redirects.</p>
+    <div class="input-container">
+        <input type="file" id="csvFileInput" accept=".csv">
+
+        <!-- Option Selection for Analysis Type -->
+         <p>Choose which Columns to Test</p>
+         <input type="text" id="originColumn" placeholder="Origin"/>
+         <input type="text" id="targetColumn" placeholder="Target"/>
+        <div>
+            <label>
+                <input type="radio" name="analysisType" value="simple" checked>
+                Simple Duplicate Checker
+            </label>
+            <p class="description">This option checks for direct circular redirects, where an origin URL redirects to a
+                target, and the target redirects back to the origin. Useful for identifying simple duplicate paths.</p>
+
+            <label>
+                <input type="radio" name="analysisType" value="enhanced">
+                Enhanced Redirect Analysis
+            </label>
+            <p class="description">This option checks for redirects that loop back to root ("/") or similar URLs, which
+                can create "Too many redirects" errors. Useful for identifying redirects with wildcard or broad
+                patterns.</p>
+        </div>
+
+        <button id="startButton" disabled>Start Analysis</button>
+    </div>
+    <div class="mainLogDiv">
+        <button type="button" id="clearButton" class="clearButton">CLEAR</button>
+        <pre id="output">
+            <span style="color: #a8a8a8;">Created By: Liel Buchnik</span>
+            <span style="color: #a8a8a8;">Last Update: 13th November, 2024</span>
+        </pre>
+    </div>
+</body>
+
+</html>

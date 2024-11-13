@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#csvFileInput,
+#startButton {
+    width: fit-content;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#startButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#startButton:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+#output {
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 1200px;
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #353535;
+    font-family: monospace;
+    text-align: left;
+    white-space: pre-wrap;
+    color: #bdbdbd;
+}
+
+.description {
+    font-size: 14px;
+    color: #666;
+    max-width: 600px;
+    margin: 5px auto;
+    text-align: left;
+}
+
+.issue {
+    color: red;
+    font-weight: bold;
+}
+
+#downloadCSVButton {
+    background-color: #30beff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-weight: 600;
+}
+
+#downloadCSVButton:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+#downloadCSVButton {
+    background-color: #30beff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-weight: 600;
+}
+
+.clearButton {
+    background-color: rgba(255, 106, 106, 0.826);
+    border: none;
+    outline: none;
+    font-size: 11px;
+    width: 5%;
+    height: 6%;
+    color: rgba(255, 255, 255, 0.922);
+    font-weight: 600;
+}
+
+.mainLogDiv{
+    margin: 20px auto;
+    width: 1200px;
+}
