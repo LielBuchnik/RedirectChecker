@@ -124,6 +124,9 @@ function scrollToBottom(element) {
 // Create or update the "Download Results" button with new CSV data
 function createDownloadButton(results) {
     let downloadButton = document.getElementById("downloadCSVButton");
+    if (downloadButton){
+        downloadButton.disabled = false;
+    }
     if (!downloadButton) {
         downloadButton = document.createElement("button");
         downloadButton.innerText = "Download Results as CSV";
