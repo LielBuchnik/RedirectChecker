@@ -62,6 +62,19 @@
                 </div>
                 <div style="display: flex;">
                     <label>
+                        <input type="radio" name="analysisType" value="multiStepRedirect">
+                        Multi-Step Redirect Optimization
+                    </label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <span class="tooltip-text">
+                            Detects cases where an origin goes through multiple redirects before reaching its final target.<br>
+                            Suggests a direct redirect to eliminate unnecessary steps.
+                        </span>
+                    </div>
+                </div>                
+                <div style="display: flex;">
+                    <label>
                         <input type="radio" name="analysisType" value="comprehensive" checked>
                         Comprehensive Analysis (All Checks)
                     </label>
